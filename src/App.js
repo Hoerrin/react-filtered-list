@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import EmployeesList from './EmployeesList'
+import 'react-perfect-scrollbar/dist/css/styles.css';
+import PerfectScrollbar from 'react-perfect-scrollbar'
+
 
 function App() {
+  const [filter, setFilter] = useState('')
+
+  const employees = ['Michal', 'Kasia', 'Jacek', 'Marta', 'Tomek', 'Ania', 'Rafal', 'Marcin', 'Krzysztof', 'Grzegorz', 'Magdalena']
+  const employeesFiltered = filter ? employees.filter(name => name.toLowerCase().includes(filter.toLowerCase())) : employees
+
+  const handleInput = (event) => {
+    setFilter(event.target.value)
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="container">
+        <div className="container__header">
+          <input type="text" className="header__input" placeholder='Search...' value={filter} onChange={handleInput} />
+        </div>
+        <ul className="container__list">
+        <PerfectScrollbar options={{swipeEasing: true}}>
+            <EmployeesList employeesFiltered={employeesFiltered} />
+        </PerfectScrollbar>
+        </ul>
+      </div>
     </div>
   );
 }
